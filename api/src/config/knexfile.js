@@ -5,7 +5,7 @@ module.exports = {
       host: 'localhost',
       user: 'postgres',
       password: 'qwer1234',
-      database: 'db_riquinho',
+      database: 'lets-code',
       charset: 'utf8',
     },
     // migrations: {
