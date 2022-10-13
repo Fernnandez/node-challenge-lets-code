@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Pedido } from './Pedido';
 
-enum Cargo {
+export enum Cargo {
   Vendedor,
   Gerente
 }
@@ -18,10 +18,10 @@ export class Funcionario {
   cargo: Cargo;
 
   @ManyToOne(type => Funcionario, (funcionario: Funcionario) => funcionario.liderados)
-  gerente: Funcionario;
+  gerente?: Funcionario;
 
   @OneToMany(type => Funcionario, (funcionario: Funcionario) => funcionario.gerente)
-  liderados: Funcionario[];
+  liderados?: Funcionario[];
 
   @OneToMany(type => Pedido, (pedido: Pedido) => pedido.vendedor)
   pedidos: Pedido[];

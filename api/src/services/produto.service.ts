@@ -1,5 +1,6 @@
 import { Repository } from 'typeorm';
 import { typeorm } from '../data/data-source';
+import CriarProdutoDTO from '../dtos/CriarProdutoDTO';
 import { Produto } from '../entities/Produto';
 
 export class ProdutoService {
@@ -13,11 +14,7 @@ export class ProdutoService {
     return this.produtoRepository.find();
   }
 
-  async createProduct() {
-    return this.produtoRepository.save({
-      descricao: `produto${Math.random().toFixed(2)}`,
-      estoque: 1,
-      preco: 1.5
-    });
+  async criarProduto(produto: CriarProdutoDTO) {
+    return this.produtoRepository.save(produto);
   }
 }

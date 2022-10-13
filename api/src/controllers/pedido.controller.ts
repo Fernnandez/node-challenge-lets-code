@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
-import { ProdutoService } from '../services/produto.service';
+import { Funcionario } from '../entities/Funcionario';
+import { ItemPedido } from '../entities/ItemPedido';
+import { PedidoService } from '../services/pedido.service';
 
-export class ProdutoController {
+export class PedidoController {
   async findAll(resquest: Request, response: Response) {
     try {
-      const service = new ProdutoService();
+      const service = new PedidoService();
       const result = await service.findAll();
       return response.json(result);
     } catch (error: any) {
@@ -15,11 +17,13 @@ export class ProdutoController {
 
   async create(resquest: Request, response: Response) {
     try {
-      const service = new ProdutoService();
-      const result = await service.criarProduto({
-        descricao: `produto${Math.random().toFixed(2)}`,
-        estoque: 1,
-        preco: 1.5
+      const service = new PedidoService();
+      const result = await service.criarPedido({
+        vendedor: new Funcionario(),
+        itens: new Array<ItemPedido>(),
+        data_pedido: new Date(),
+        endereco_entrega: '',
+        preco_total: 10
       });
       return response.json(result);
     } catch (error: any) {
