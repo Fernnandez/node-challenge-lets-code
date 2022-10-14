@@ -4,17 +4,17 @@ import CriarPedidoDTO from '../dtos/CriarPedidoDTO';
 import { Pedido } from '../entities/Pedido';
 
 export class PedidoService {
-  private produtoRepository: Repository<Pedido>;
+  private pedidoRepository: Repository<Pedido>;
 
   constructor() {
-    this.produtoRepository = typeorm.getRepository(Pedido);
+    this.pedidoRepository = typeorm.getRepository(Pedido);
   }
 
   async findAll() {
-    return this.produtoRepository.find();
+    return this.pedidoRepository.find();
   }
 
   async criarPedido(pedido: CriarPedidoDTO) {
-    return this.produtoRepository.save(pedido);
+    return this.pedidoRepository.save(pedido);
   }
 }
