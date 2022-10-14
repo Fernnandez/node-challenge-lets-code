@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'ty
 import { Pedido } from './Pedido';
 
 export enum Cargo {
-  Vendedor,
-  Gerente
+  Vendedor = 'VENDEDOR',
+  Gerente = 'GERENTE'
 }
 
 @Entity('funcionario')
