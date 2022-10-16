@@ -11,6 +11,6 @@ export class Produto {
   @Column()
   estoque: number;
   
-  @Column()
+  @Column({ type: "numeric"})
   preco: number;
 }
