@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
-import { Cargo } from '../entities/Funcionario';
+import { Cargo, Funcionario } from '../entities/Funcionario';
 import { FuncionarioService } from '../services/funcionario.service';
 
 export class FuncionarioController {
-  async findAll(resquest: Request, response: Response) {
+
+  async findAll(request: Request, response: Response) {
     try {
-      const service = new FuncionarioService();
-      const result = await service.findAll();
+      const funcionarioService = new FuncionarioService();
+      const result = await funcionarioService.findAll();
       return response.json(result);
     } catch (error: any) {
       console.log(error);
@@ -14,13 +15,25 @@ export class FuncionarioController {
     }
   }
 
-  async create(resquest: Request, response: Response) {
+  async create(request: Request, response: Response) {
     try {
-      const service = new FuncionarioService();
-      const result = await service.criarFuncionario({
-        nome: `produto${Math.random().toFixed(2)}`,
-        cargo: Cargo.Vendedor
+      const funcionarioService = new FuncionarioService();
+      const { nome, cargo, gerenteId } = request.body;
+      
+      let gerente: Funcionario | undefined;
+
+      if (gerenteId) {
+        gerente = await funcionarioService.findGerente(gerenteId) || undefined;
+        if (!gerente) {
+          return response.status(400).json({ error: "Gerente não encontrado" });
+        }
+      }
+      const result = await funcionarioService.criarFuncionario({
+        nome,
+        cargo,
+        gerente
       });
+
       return response.json(result);
     } catch (error: any) {
       return response.json({ error: error.message });

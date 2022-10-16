@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { typeorm } from '../data/data-source';
 import CriarFuncionarioDTO from '../dtos/CriarFuncionarioDTO';
-import { Funcionario } from '../entities/Funcionario';
+import { Cargo, Funcionario } from '../entities/Funcionario';
 
 export class FuncionarioService {
   private funcionarioRepository: Repository<Funcionario>;
@@ -12,6 +12,10 @@ export class FuncionarioService {
 
   async findAll() {
     return this.funcionarioRepository.find();
+  }
+
+  async findGerente(funcionarioId: number): Promise<Funcionario | null> {
+    return this.funcionarioRepository.findOne({ where: { id: funcionarioId, cargo: Cargo.Gerente } });
   }
 
   async criarFuncionario(funcionario: CriarFuncionarioDTO) {
