@@ -11,7 +11,7 @@ export class FuncionarioService {
   }
 
   async findAll() {
-    return this.funcionarioRepository.find();
+    return this.funcionarioRepository.find({relations: ["gerente"]});
   }
 
   async find(funcionarioId: number): Promise<Funcionario | null> {
