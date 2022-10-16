@@ -1,6 +1,7 @@
 import {
   AppShell,
   Button,
+  Container,
   Group,
   Header,
   MantineProvider,
@@ -60,12 +61,14 @@ export default function App() {
           </Header>
         }
       >
-        <Routes>
-          <Route path="/produtos" element={<Produtos />} />
-          <Route path="/pedidos" element={<Pedidos />} />
-          <Route path="/funcionarios" element={<Funcionarios />} />
-          <Route path="*" element={<Navigate to="/funcionarios" replace />} />
-        </Routes>
+        <Container style={{ minWidth: '90%' }}>
+          <Routes>
+            <Route path="/produtos" element={<Produtos />} />
+            <Route path="/pedidos" element={<Pedidos />} />
+            <Route path="/funcionarios" element={<Funcionarios />} />
+            <Route path="*" element={<Navigate to="/funcionarios" replace />} />
+          </Routes>
+        </Container>
       </AppShell>
     </MantineProvider>
   );
