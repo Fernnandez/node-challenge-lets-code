@@ -14,17 +14,22 @@ export class PedidoService {
   }
 
   async findAll() {
-    return this.pedidoRepository.find();
+    return this.pedidoRepository.find({ relations: ["vendedor", "itens"] });
   }
 
-  async criarPedido(pedidoDTO: CriarPedidoDTO) {
+  async criarPedido(pedidoDTO: CriarPedidoDTO): Promise<Pedido> {
 
-    const pedido = await this.pedidoRepository.save({
-      vendedor: pedidoDTO.vendedor, endereco_entrega: pedidoDTO.endereco_entrega, data_pedido: pedidoDTO.data_pedido
+    let pedido = await this.pedidoRepository.save({
+      vendedor: pedidoDTO.vendedor, 
+      endereco_entrega: pedidoDTO.endereco_entrega, 
+      data_pedido: pedidoDTO.data_pedido, 
+      preco_total: pedidoDTO.preco_total
     });
 
-    const itensPedido = pedidoDTO.produtos.map(p => new ItemPedido(pedido, p));
+    let itensPedido = pedidoDTO.produtos.map(p => new ItemPedido(pedido, p));
 
-    this.itemPedidoRepository.save(itensPedido);
+    await this.itemPedidoRepository.save(itensPedido);
+
+    return this.pedidoRepository.findOneOrFail({ where: {id: pedido.id}, relations: ["vendedor", "itens"] });
   }
 }

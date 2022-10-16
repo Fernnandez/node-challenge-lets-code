@@ -24,7 +24,7 @@ export class PedidoController {
       const funcionarioService = new FuncionarioService();
       const produtoService = new ProdutoService();
 
-      let vendedor: Funcionario | undefined = await funcionarioService.findGerente(vendedorId) || undefined;
+      let vendedor: Funcionario | undefined = await funcionarioService.find(vendedorId) || undefined;
 
       if (!vendedor) {
         return response.status(404).json({ error: "Vendedor não encontrado" });
@@ -36,13 +36,13 @@ export class PedidoController {
         return response.status(404).json({ error: "Produtos não encontrados" });
       }
 
-      const preco_total = produtos.map(p => p.preco).reduce((acumulador, preco) => { 
-        return acumulador + preco;
-      });
+      const preco_total = produtos.map(p => Number(p.preco)).reduce((acumulador, preco) => 
+        acumulador + preco, 0
+      );
 
       const pedidoService = new PedidoService();
       const result = await pedidoService.criarPedido({
-        vendedor: new Funcionario(),
+        vendedor,
         produtos,
         data_pedido,
         endereco_entrega,

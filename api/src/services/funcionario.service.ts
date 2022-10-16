@@ -14,6 +14,10 @@ export class FuncionarioService {
     return this.funcionarioRepository.find();
   }
 
+  async find(funcionarioId: number): Promise<Funcionario | null> {
+    return this.funcionarioRepository.findOne({ where: { id: funcionarioId } });
+  }
+
   async findGerente(funcionarioId: number): Promise<Funcionario | null> {
     return this.funcionarioRepository.findOne({ where: { id: funcionarioId, cargo: Cargo.Gerente } });
   }
