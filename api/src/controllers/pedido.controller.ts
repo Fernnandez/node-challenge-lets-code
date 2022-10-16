@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
 import { Funcionario } from '../entities/Funcionario';
 import { ItemPedido } from '../entities/ItemPedido';
+import { Produto } from '../entities/Produto';
+import { FuncionarioService } from '../services/funcionario.service';
 import { PedidoService } from '../services/pedido.service';
+import { ProdutoService } from '../services/produto.service';
 
 export class PedidoController {
-  async findAll(resquest: Request, response: Response) {
+  async findAll(request: Request, response: Response) {
     try {
-      const service = new PedidoService();
-      const result = await service.findAll();
+      const pedidoService = new PedidoService();
+      const result = await pedidoService.findAll();
       return response.json(result);
     } catch (error: any) {
       console.log(error);
@@ -15,15 +18,35 @@ export class PedidoController {
     }
   }
 
-  async create(resquest: Request, response: Response) {
+  async create(request: Request, response: Response) {
     try {
-      const service = new PedidoService();
-      const result = await service.criarPedido({
+      const { vendedorId, produtosIds, data_pedido, endereco_entrega } = request.body;
+      const funcionarioService = new FuncionarioService();
+      const produtoService = new ProdutoService();
+
+      let vendedor: Funcionario | undefined = await funcionarioService.findGerente(vendedorId) || undefined;
+
+      if (!vendedor) {
+        return response.status(404).json({ error: "Vendedor não encontrado" });
+      }
+
+      const produtos = await produtoService.findProdutos(produtosIds);
+
+      if (!produtos || produtos.length < 1) {
+        return response.status(404).json({ error: "Produtos não encontrados" });
+      }
+
+      const preco_total = produtos.map(p => p.preco).reduce((acumulador, preco) => { 
+        return acumulador + preco;
+      });
+
+      const pedidoService = new PedidoService();
+      const result = await pedidoService.criarPedido({
         vendedor: new Funcionario(),
-        itens: new Array<ItemPedido>(),
-        data_pedido: new Date(),
-        endereco_entrega: '',
-        preco_total: 10
+        produtos,
+        data_pedido,
+        endereco_entrega,
+        preco_total
       });
       return response.json(result);
     } catch (error: any) {

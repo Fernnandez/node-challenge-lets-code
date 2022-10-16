@@ -1,20 +1,30 @@
 import { Repository } from 'typeorm';
 import { typeorm } from '../data/data-source';
 import CriarPedidoDTO from '../dtos/CriarPedidoDTO';
+import { ItemPedido } from '../entities/ItemPedido';
 import { Pedido } from '../entities/Pedido';
 
 export class PedidoService {
   private pedidoRepository: Repository<Pedido>;
+  private itemPedidoRepository: Repository<ItemPedido>;
 
   constructor() {
     this.pedidoRepository = typeorm.getRepository(Pedido);
+    this.itemPedidoRepository = typeorm.getRepository(ItemPedido);
   }
 
   async findAll() {
     return this.pedidoRepository.find();
   }
 
-  async criarPedido(pedido: CriarPedidoDTO) {
-    return this.pedidoRepository.save(pedido);
+  async criarPedido(pedidoDTO: CriarPedidoDTO) {
+
+    const pedido = await this.pedidoRepository.save({
+      vendedor: pedidoDTO.vendedor, endereco_entrega: pedidoDTO.endereco_entrega, data_pedido: pedidoDTO.data_pedido
+    });
+
+    const itensPedido = pedidoDTO.produtos.map(p => new ItemPedido(pedido, p));
+
+    this.itemPedidoRepository.save(itensPedido);
   }
 }

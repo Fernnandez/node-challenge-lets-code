@@ -25,7 +25,7 @@ export class FuncionarioController {
       if (gerenteId) {
         gerente = await funcionarioService.findGerente(gerenteId) || undefined;
         if (!gerente) {
-          return response.status(400).json({ error: "Gerente não encontrado" });
+          return response.status(404).json({ error: "Gerente não encontrado" });
         }
       }
       const result = await funcionarioService.criarFuncionario({

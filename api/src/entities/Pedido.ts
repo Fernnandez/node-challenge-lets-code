@@ -11,7 +11,7 @@ export class Pedido {
   vendedor: Funcionario;
   
   @OneToMany(type => ItemPedido, (item: ItemPedido) => item.pedido)
-  itens: ItemPedido[];
+  itens?: ItemPedido[];
 
   @Column()
   endereco_entrega: string;
