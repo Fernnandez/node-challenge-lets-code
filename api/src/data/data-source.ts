@@ -10,10 +10,11 @@ export const typeorm = new DataSource({
   port: 5432,
   username: 'dev',
   password: 'dev_pass',
-  database: 'lets-code',
+  database: 'lets',
   entities: [Produto, Funcionario, Pedido, ItemPedido],
   migrations: ['./migrations/*.ts'],
   migrationsTableName: 'migrations',
   logging: false,
   synchronize: true,
+  migrationsRun: true,
 });
