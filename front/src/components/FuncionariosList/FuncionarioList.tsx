@@ -12,16 +12,12 @@ import {
 } from '@mantine/core';
 
 import { IconEdit, IconTrash } from '@tabler/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { findAllFuncionario, Funcionario } from '../../services/funcionario';
 import { EditarFuncionarioModal } from './EditarFuncionarioModal/EditarFuncionarioModal';
 
 interface FuncionarioListProps {
-  data: {
-    id: number;
-    nome: string;
-    email: string;
-    cargo: string;
-  }[];
+  data: Funcionario[];
 }
 
 const getInitials = (name: string) => {
@@ -31,12 +27,8 @@ const getInitials = (name: string) => {
 
 export function FuncionarioList({ data }: FuncionarioListProps) {
   const [openedModalEditar, setOpenedModalEditar] = useState(false);
-  const [funcionarioToEdit, setFuncionarioToEdit] = useState<{
-    id: number;
-    nome: string;
-    email: string;
-    cargo: string;
-  } | null>(null);
+  const [funcionarioToEdit, setFuncionarioToEdit] =
+    useState<Funcionario | null>(null);
 
   const handleOpenModalEditar = (funcionario: {
     id: number;
@@ -52,57 +44,6 @@ export function FuncionarioList({ data }: FuncionarioListProps) {
     // TODO integrar com back funcao de excluir
   };
 
-  const rows = data.map((item) => {
-    return (
-      <tr key={item.id}>
-        <td>
-          <Group spacing="sm">
-            <Avatar size="md" radius="lg" color="blue" variant="filled">
-              {getInitials(item.nome)}
-            </Avatar>
-            <Text size="sm" weight={500}>
-              {item.nome}
-            </Text>
-          </Group>
-        </td>
-        <td>{item.email}</td>
-        <td>{item.cargo}</td>
-        <td>
-          <Group>
-            <ActionIcon
-              color="clue"
-              onClick={() => handleOpenModalEditar(item)}
-            >
-              <IconEdit size={20} />
-            </ActionIcon>
-            <Popover width={200} position="right" withArrow shadow="md">
-              <Popover.Target>
-                <ActionIcon color="red">
-                  <IconTrash size={20} />
-                </ActionIcon>
-              </Popover.Target>
-              <Popover.Dropdown>
-                <Stack>
-                  <Text size="sm">
-                    Tem certeza que deseja excluir esse item ?
-                  </Text>
-                  <Button
-                    size="xs"
-                    variant="light"
-                    color="red"
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    Remover
-                  </Button>
-                </Stack>
-              </Popover.Dropdown>
-            </Popover>
-          </Group>
-        </td>
-      </tr>
-    );
-  });
-
   return (
     <>
       <ScrollArea>
@@ -110,12 +51,72 @@ export function FuncionarioList({ data }: FuncionarioListProps) {
           <thead>
             <tr>
               <th>Nome</th>
-              <th>Email</th>
               <th>Cargo</th>
+              <th>Gerente</th>
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody>{rows}</tbody>
+          <tbody>
+            {data.length > 0 &&
+              data.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <Group spacing="sm">
+                      <Avatar
+                        size="md"
+                        radius="lg"
+                        color="blue"
+                        variant="filled"
+                      >
+                        {getInitials(item.nome)}
+                      </Avatar>
+                      <Text size="sm" weight={500}>
+                        {item.nome}
+                      </Text>
+                    </Group>
+                  </td>
+                  <td>{item.cargo}</td>
+                  <td>{item.id}</td>
+                  <td>
+                    <Group>
+                      <ActionIcon
+                        color="clue"
+                        onClick={() => handleOpenModalEditar(item)}
+                      >
+                        <IconEdit size={20} />
+                      </ActionIcon>
+                      <Popover
+                        width={200}
+                        position="right"
+                        withArrow
+                        shadow="md"
+                      >
+                        <Popover.Target>
+                          <ActionIcon color="red">
+                            <IconTrash size={20} />
+                          </ActionIcon>
+                        </Popover.Target>
+                        <Popover.Dropdown>
+                          <Stack>
+                            <Text size="sm">
+                              Tem certeza que deseja excluir esse item ?
+                            </Text>
+                            <Button
+                              size="xs"
+                              variant="light"
+                              color="red"
+                              onClick={() => handleDelete(item.id)}
+                            >
+                              Remover
+                            </Button>
+                          </Stack>
+                        </Popover.Dropdown>
+                      </Popover>
+                    </Group>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </Table>
       </ScrollArea>
 

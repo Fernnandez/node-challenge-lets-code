@@ -1,11 +1,23 @@
 import { Box, Button, Group, Title } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CriarFuncionarioModal } from '../components/FuncionariosList/CriarFuncionarioModal/CriarFuncionarioModal';
 import { FuncionarioList } from '../components/FuncionariosList/FuncionarioList';
-import funcionarios from '../services/funcionarios.json';
+import { findAllFuncionario, Funcionario } from '../services/funcionario';
 
 export function Funcionarios() {
+  const [funcionarios, setFuncionario] = useState<Funcionario[]>([]);
+  const [haveChanges, setHaveChanges] = useState(true);
   const [openedModalCriar, setOpenedModalCriar] = useState(false);
+
+  useEffect(() => {
+    if (haveChanges) {
+      findAllFuncionario().then((data) => {
+        setFuncionario(data.data);
+      });
+    }
+
+    setHaveChanges(false);
+  }, [haveChanges]);
 
   return (
     <Box mt="lg">
@@ -31,6 +43,7 @@ export function Funcionarios() {
 
       <CriarFuncionarioModal
         opened={openedModalCriar}
+        updateList={() => setHaveChanges(true)}
         onClose={() => setOpenedModalCriar(false)}
       />
     </Box>
