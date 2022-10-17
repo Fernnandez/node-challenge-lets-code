@@ -1,21 +1,24 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { typeorm } from '../data/data-source';
-import { Produto } from '../entities/produto';
+import CriarProdutoDTO from '../dtos/CriarProdutoDTO';
+import { Produto } from '../entities/Produto';
 
 export class ProdutoService {
-  private repository: Repository<Produto>;
+  private produtoRepository: Repository<Produto>;
 
   constructor() {
-    this.repository = typeorm.getRepository(Produto);
+    this.produtoRepository = typeorm.getRepository(Produto);
   }
 
   async findAll() {
-    return this.repository.find();
+    return this.produtoRepository.find();
   }
 
-  async createProduct() {
-    return this.repository.save({
-      nome: `produto${Math.random().toFixed(2)}`,
-    });
+  async findProdutos(produtosIds: number[]) {
+    return this.produtoRepository.find({ where: { id: In(produtosIds) } });
+  }
+
+  async criarProduto(produto: CriarProdutoDTO) {
+    return this.produtoRepository.save(produto);
   }
 }

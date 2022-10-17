@@ -6,5 +6,11 @@ export class Produto {
   id: number;
 
   @Column()
-  nome: string;
+  descricao: string;
+  
+  @Column()
+  estoque: number;
+  
+  @Column({ type: "numeric"})
+  preco: number;
 }
