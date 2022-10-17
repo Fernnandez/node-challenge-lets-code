@@ -5,10 +5,15 @@ export interface Funcionario {
   nome: string;
   email: string;
   cargo: string;
+  gerente: Funcionario;
 }
 
 export const findAllFuncionario = async () => {
   return api.get<Funcionario[]>('/funcionario');
+};
+
+export const findAllGerentes = async () => {
+  return api.get<Funcionario[]>('/funcionario/gerentes');
 };
 
 export const createFuncionario = async (data: {

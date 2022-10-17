@@ -39,7 +39,7 @@ export function Funcionarios() {
 
       <FuncionarioList data={funcionarios} />
 
-      {/* modals */}
+      {/* modal */}
 
       <CriarFuncionarioModal
         opened={openedModalCriar}

@@ -6,8 +6,6 @@ interface EditarFuncionarioModalProps {
   data: { id: number; nome: string; cargo: string; email: string };
 }
 
-// TODO criar estrutura do form e integrar com api
-
 export function EditarFuncionarioModal({
   data,
   opened,
@@ -17,7 +15,7 @@ export function EditarFuncionarioModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Adicionar Funcionario"
+      title="Editar Funcionario"
       size="md"
       centered
     >

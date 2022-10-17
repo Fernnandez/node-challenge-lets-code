@@ -1,7 +1,12 @@
 import { Box, Button, Grid, Modal, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { createFuncionario } from '../../../services/funcionario';
+import {
+  createFuncionario,
+  findAllGerentes,
+  Funcionario,
+} from '../../../services/funcionario';
 import { showNotification } from '@mantine/notifications';
+import { useEffect, useState } from 'react';
 
 interface CriarFuncionarioModalProps {
   opened: boolean;
@@ -22,11 +27,26 @@ export function CriarFuncionarioModal({
     },
   });
 
+  const [gerentes, setGerentes] = useState<{ label: string; value: number }[]>(
+    []
+  );
+
+  useEffect(() => {
+    findAllGerentes().then((data) => {
+      const result = data.data.map((item) => ({
+        label: item.nome,
+        value: item.id,
+      }));
+      setGerentes(result);
+    });
+  }, []);
+
   const handleSubmit = (values: {
     nome: string;
     cargo: string;
     gerente: string;
   }) => {
+    console.log(values.gerente);
     createFuncionario(values)
       .then(() => {
         showNotification({
@@ -85,10 +105,7 @@ export function CriarFuncionarioModal({
               label="Gerente"
               placeholder="Gerente"
               mb="md"
-              data={[
-                { value: '1', label: 'Jose' },
-                { value: '2', label: 'Ana' },
-              ]}
+              data={[...gerentes]}
               {...form.getInputProps('gerente')}
             />
           </Grid.Col>

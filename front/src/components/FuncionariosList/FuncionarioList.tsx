@@ -35,6 +35,7 @@ export function FuncionarioList({ data }: FuncionarioListProps) {
     nome: string;
     email: string;
     cargo: string;
+    gerente: Funcionario;
   }) => {
     setFuncionarioToEdit(funcionario);
     setOpenedModalEditar(true);
@@ -76,7 +77,7 @@ export function FuncionarioList({ data }: FuncionarioListProps) {
                     </Group>
                   </td>
                   <td>{item.cargo}</td>
-                  <td>{item.id}</td>
+                  <td>{item.gerente ? item.gerente.nome : 'sem gerente'}</td>
                   <td>
                     <Group>
                       <ActionIcon
@@ -120,7 +121,7 @@ export function FuncionarioList({ data }: FuncionarioListProps) {
         </Table>
       </ScrollArea>
 
-      {/* modals */}
+      {/* modal */}
 
       {funcionarioToEdit && (
         <EditarFuncionarioModal
