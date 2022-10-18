@@ -22,7 +22,11 @@ interface FuncionarioListProps {
 
 const getInitials = (name: string) => {
   const names = name.split(' ');
-  return names[0][0].concat(names[1][0]);
+  if (names.length > 1) {
+    return names[0][0].concat(names[1][0]);
+  } else {
+    return names[0][0].concat(names[0][1]);
+  }
 };
 
 export function FuncionarioList({ data }: FuncionarioListProps) {

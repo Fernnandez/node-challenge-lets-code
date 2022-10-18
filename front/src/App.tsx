@@ -14,15 +14,6 @@ import { Funcionarios } from './pages/Funcionarios';
 import { Pedidos } from './pages/Pedidos';
 import { Produtos } from './pages/Produtos';
 
-function Demo() {
-  return (
-    <MantineProvider withNormalizeCSS withGlobalStyles>
-      <NotificationsProvider>
-        <App />
-      </NotificationsProvider>
-    </MantineProvider>
-  );
-}
 const verifyPage = (page: string) => {
   return page === useLocation().pathname;
 };
