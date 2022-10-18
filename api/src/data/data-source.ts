@@ -16,4 +16,5 @@ export const typeorm = new DataSource({
   migrationsTableName: 'migrations',
   logging: false,
   synchronize: true,
+  migrationsRun: true,
 });

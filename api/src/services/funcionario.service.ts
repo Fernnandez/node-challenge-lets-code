@@ -11,15 +11,21 @@ export class FuncionarioService {
   }
 
   async findAll() {
-    return this.funcionarioRepository.find({relations: ["gerente"]});
+    return this.funcionarioRepository.find({ relations: ['gerente'] });
   }
 
   async find(funcionarioId: number): Promise<Funcionario | null> {
     return this.funcionarioRepository.findOne({ where: { id: funcionarioId } });
   }
 
-  async findGerente(funcionarioId: number): Promise<Funcionario | null> {
-    return this.funcionarioRepository.findOne({ where: { id: funcionarioId, cargo: Cargo.Gerente } });
+  async findGerentes(): Promise<Funcionario[]> {
+    return this.funcionarioRepository.find({ where: { cargo: Cargo.Gerente } });
+  }
+
+  async findOneGerente(funcionarioId: number): Promise<Funcionario | null> {
+    return this.funcionarioRepository.findOne({
+      where: { id: funcionarioId, cargo: Cargo.Gerente },
+    });
   }
 
   async criarFuncionario(funcionario: CriarFuncionarioDTO) {

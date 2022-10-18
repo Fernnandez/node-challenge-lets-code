@@ -12,4 +12,8 @@ router.get('/pedido', new PedidoController().findAll);
 router.post('/pedido', new PedidoController().create);
 
 router.get('/funcionario', new FuncionarioController().findAll);
+router.get(
+  '/funcionario/gerentes',
+  new FuncionarioController().findAllGerentes
+);
 router.post('/funcionario', new FuncionarioController().create);
