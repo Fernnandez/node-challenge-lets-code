@@ -13,6 +13,12 @@ As instruções de execução do projeto estão logo abaixo.
 
 ### Backend
 
+### Banco de dados
+
+Em uma instalação do postgres, crie um banco de dados com as credenciais contidas no arquivo [api/src/data/data-source.ts](https://github.com/Fernnandez/node-challenge-lets-code/blob/main/api/src/data/data-source.ts).
+
+Após executar a API nos passos descritos abaixo, as tabelas serão criadas automaticamente.
+
 #### Instalar dependências
 
 ```
