@@ -11,24 +11,22 @@ import {
 } from '@mantine/core';
 
 import { IconEdit, IconTrash } from '@tabler/icons';
-import { Pedido } from '../../services/pedidos';
+import { Produto } from '../../services/produtos';
 
-interface PedidoListProps {
-  data: Pedido[];
+interface ProdutoListProps {
+  data: Produto[];
 }
 
-export function PedidoList({ data }: PedidoListProps) {
+export function ProdutoList({ data }: ProdutoListProps) {
   return (
     <>
       <ScrollArea>
         <Table sx={{ minWidth: 400 }} verticalSpacing="sm">
           <thead>
             <tr>
-              <th>Vendedor</th>
-              <th>Endereço</th>
+              <th>Descrição</th>
+              <th>Estoque</th>
               <th>Preço Total</th>
-              <th>Data</th>
-              <th>Produtos</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -36,30 +34,9 @@ export function PedidoList({ data }: PedidoListProps) {
             {data.length > 0 &&
               data.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.vendedor.nome}</td>
-                  <td>{item.endereco_entrega}</td>
-                  <td>{item.preco_total}</td>
-                  <td>
-                    {new Date(item.data_pedido).toLocaleDateString('pt-BR')}
-                  </td>
-                  <td>
-                    <Popover width={280} shadow="md" position="bottom">
-                      <Popover.Target>
-                        <Text style={{ cursor: 'pointer' }}>
-                          {item.itens.length} produtos
-                        </Text>
-                      </Popover.Target>
-                      <Popover.Dropdown>
-                        <List>
-                          {item.itens.map((element) => (
-                            <List.Item key={element.produto?.id + Math.random()}>
-                              {element.produto.descricao}
-                            </List.Item>
-                          ))}
-                        </List>
-                      </Popover.Dropdown>
-                    </Popover>
-                  </td>
+                  <td>{item.descricao}</td>
+                  <td>{item.estoque}</td>
+                  <td>{item.preco}</td>
                   <td>
                     <Group>
                       <ActionIcon color="clue">
